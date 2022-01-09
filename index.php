@@ -1,17 +1,17 @@
 <?php
-//if download button clicked
+// se o botão de download for clicado
 if(isset($_POST['downloadBtn'])){
-    //getting the user img url from input field
-    $imgURL = $_POST['file']; //storing in variable
-    $regPattern = '/\.(jpe?g|png|gif|bmp)$/i'; //pattern to validataing img extension
-    if(preg_match($regPattern, $imgURL)){ //if pattern matched to user img url
-        $initCURL = curl_init($imgURL); //intializing curl
+  // obtendo o usuário img url do campo de entrada
+    $imgURL = $_POST['file']; // armazenando na variável
+    $regPattern = '/\.(jpe?g|png|gif|bmp)$/i';// padrão para validar a extensão img
+    if(preg_match($regPattern, $imgURL)){ // se o padrão corresponder ao url img do usuário
+        $initCURL = curl_init($imgURL); // inicializando o curl
         curl_setopt($initCURL, CURLOPT_RETURNTRANSFER, true);
         $downloadImgLink = curl_exec($initCURL); //executing curl
-        curl_close($initCURL); //closing curl
-        // now we convert the base 64 format to jpg to download
-        header('Content-type: image/jpg'); //in which extension you want to save img
-        header('Content-Disposition: attachment;filename="image.jpg"'); //in which name you want to save img
+        curl_close($initCURL); // executando curl
+       // agora convertemos o formato de base 64 para jpg para fazer o download
+        header('Content-type: image/jpg'); // em qual extensão você deseja salvar img
+        header('Content-Disposition: attachment;filename="image.jpg"');// em qual nome você deseja salvar img
         echo $downloadImgLink;
     }
 }
@@ -43,30 +43,30 @@ if(isset($_POST['downloadBtn'])){
 
     <script>
         $(document).ready(function(){
-            //if user focus out from the input field
+           // se o usuário focar fora do campo de entrada
             $("#field").on("focusout", function(){
-                //getting user entered img URL
+             // obtendo o URL img inserido pelo usuário
                 var imgURL = $("#field").val();
-                if(imgURL != ""){ //if input field isn't blank
-                    var regPattern = /\.(jpe?g|png|gif|bmp)$/i; //pattern to validataing img extension
-                    if(regPattern.test(imgURL)){ //if pattern matched to image url
-                        var imgTag = '<img src="'+ imgURL +'" alt="">'; //creating a new img tag to show img
-                        $(".img-preview").append(imgTag); //appending img tag with user entered img url
-                        // adding new class which i've created in css
+                if(imgURL != ""){ // se o campo de entrada não estiver em branco
+                    var regPattern = /\.(jpe?g|png|gif|bmp)$/i; // padrão para validar a extensão img
+                    if(regPattern.test(imgURL)){ // se o padrão corresponder ao url da imagem
+                        var imgTag = '<img src="'+ imgURL +'" alt="">'; // criando uma nova tag img para mostrar img
+                        $(".img-preview").append(imgTag);// anexando a tag img ao url img inserido pelo usuário
+                        // adicionando uma nova classe que criei em css
                         $(".preview-box").addClass("imgActive");
                         $("#button").addClass("active");
                         $("#field").addClass("disabled");
                         $(".cancel-icon").on("click", function(){
-                            //we'll remove all new added class on cancel icon click
+                         // removeremos todas as novas classes adicionadas ao clicar no ícone de cancelamento
                             $(".preview-box").removeClass("imgActive");
                             $("#button").removeClass("active");
                             $("#field").removeClass("disabled");
                             $(".img-preview img").remove();
-                            // that's all in javascript/jquery now the main part is PHP
+                          // está tudo em javascript / jquery agora a parte principal é PHP
                         });
                     }else{
                         alert("Invalid img URL - " + imgURL);
-                        $("#field").val('');//if pattern not matched we'll leave the input field blank
+                        $("#field").val('');// se o padrão não corresponder, vamos deixar o campo de entrada em branco
                     }
                 }
             });
